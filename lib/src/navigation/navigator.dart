@@ -5,6 +5,19 @@ import 'package:go_router/go_router.dart';
 import '../features/features.dart';
 import 'main_tabs_screen.dart';
 
+enum AppRouteNames {
+  welcome,
+  login,
+  register,
+  home,
+  info,
+  shops,
+  profile;
+
+  String get path => '/$this';
+  String get name => '$this';
+}
+
 class GoRouterAuthNotifier extends ChangeNotifier {
   GoRouterAuthNotifier(this.ref) {
     ref.listen<AuthState>(authProvider, (_, __) {
@@ -18,18 +31,18 @@ class GoRouterAuthNotifier extends ChangeNotifier {
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authNotifier = GoRouterAuthNotifier(ref);
   return GoRouter(
-    initialLocation: '/welcome',
+    initialLocation: AppRouteNames.welcome.path,
     refreshListenable: authNotifier,
     redirect: (context, state) {
       final authState = ref.read(authProvider);
       final isAuthenticated = authState.isAuthenticated;
       final isAuthRoute =
-          (state.fullPath?.contains('welcome') ?? false) ||
-          (state.fullPath?.contains('login') ?? false) ||
-          (state.fullPath?.contains('register') ?? false);
+          (state.fullPath?.contains(AppRouteNames.welcome.name) ?? false) ||
+          (state.fullPath?.contains(AppRouteNames.login.name) ?? false) ||
+          (state.fullPath?.contains(AppRouteNames.register.name) ?? false);
 
       if (!isAuthenticated && !isAuthRoute) {
-        return '/login';
+        return AppRouteNames.login.path;
       }
 
       if (isAuthenticated && isAuthRoute) {
@@ -40,9 +53,21 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     },
     routes: [
       // Auth routes
-      GoRoute(path: '/welcome', builder: (context, state) => const WelcomeScreen()),
-      GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
-      GoRoute(path: '/register', builder: (context, state) => const RegisterScreen()),
+      GoRoute(
+        name: AppRouteNames.welcome.name,
+        path: AppRouteNames.welcome.path,
+        builder: (context, state) => const WelcomeScreen(),
+      ),
+      GoRoute(
+        name: AppRouteNames.login.name,
+        path: AppRouteNames.login.path,
+        builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        name: AppRouteNames.register.name,
+        path: AppRouteNames.register.path,
+        builder: (context, state) => const RegisterScreen(),
+      ),
       // Main tabs with StatefulShellRoute
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
@@ -50,16 +75,40 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         },
         branches: [
           StatefulShellBranch(
-            routes: [GoRoute(path: '/', builder: (context, state) => const HomeTab())],
+            routes: [
+              GoRoute(
+                name: AppRouteNames.home.name,
+                path: AppRouteNames.home.path,
+                builder: (context, state) => const HomeTab(),
+              ),
+            ],
           ),
           StatefulShellBranch(
-            routes: [GoRoute(path: '/info', builder: (context, state) => const InfoTab())],
+            routes: [
+              GoRoute(
+                name: AppRouteNames.info.name,
+                path: AppRouteNames.info.path,
+                builder: (context, state) => const InfoTab(),
+              ),
+            ],
           ),
           StatefulShellBranch(
-            routes: [GoRoute(path: '/shops', builder: (context, state) => const ShopsTab())],
+            routes: [
+              GoRoute(
+                name: AppRouteNames.shops.name,
+                path: AppRouteNames.shops.path,
+                builder: (context, state) => const ShopsTab(),
+              ),
+            ],
           ),
           StatefulShellBranch(
-            routes: [GoRoute(path: '/profile', builder: (context, state) => const ProfileTab())],
+            routes: [
+              GoRoute(
+                name: AppRouteNames.profile.name,
+                path: AppRouteNames.profile.path,
+                builder: (context, state) => const ProfileTab(),
+              ),
+            ],
           ),
         ],
       ),

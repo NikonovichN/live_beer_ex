@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:live_beer_ex/src/navigation/navigator.dart';
 
 import 'package:vector_graphics/vector_graphics_compat.dart';
 
@@ -58,26 +60,32 @@ class WelcomeScreen extends StatelessWidget {
                 children: [
                   Text(
                     'Программа лояльности для клиентов LiveBeer',
+                    textAlign: TextAlign.center,
                     style: TextTheme.of(
                       context,
                     ).displaySmall?.copyWith(height: 1.2, fontSize: 32.0),
-                    textAlign: TextAlign.center,
                   ),
                   Row(
                     children: [
                       Expanded(
-                        child: AppButton.primary(onPressed: () {}, child: Text('Вход')),
+                        child: AppButton.primary(
+                          onPressed: () => context.goNamed(AppRouteNames.login.name),
+                          child: const Text('Вход'),
+                        ),
                       ),
                       SizedBox(width: 10.0),
                       Expanded(
-                        child: AppButton.primary(onPressed: () {}, child: Text('Регистрация')),
+                        child: AppButton.primary(
+                          onPressed: () {},
+                          child: const Text('Регистрация'),
+                        ),
                       ),
                     ],
                   ),
                   AppButton.outlined(
                     onPressed: () {},
-                    child: Text('Вход без регистрации'),
                     margin: EdgeInsets.all(0.0),
+                    child: const Text('Вход без регистрации'),
                   ),
                   SizedBox(height: MediaQuery.of(context).padding.bottom),
                 ],
