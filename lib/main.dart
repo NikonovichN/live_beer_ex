@@ -8,8 +8,8 @@ import 'src/live_beer_app.dart';
 import 'src/utils/utils.dart';
 
 void main() {
-  runZonedGuarded(
-    () => runApp(const ProviderScope(child: LiveBeerApp())),
-    (e, stt) => logger.e(e, stackTrace: stt),
-  );
+  runZonedGuarded(() {
+    WidgetsFlutterBinding.ensureInitialized();
+    runApp(const ProviderScope(child: LiveBeerApp()));
+  }, (e, stt) => logger.e(e, stackTrace: stt));
 }

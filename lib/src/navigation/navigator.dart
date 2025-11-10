@@ -18,12 +18,13 @@ class GoRouterAuthNotifier extends ChangeNotifier {
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authNotifier = GoRouterAuthNotifier(ref);
   return GoRouter(
-    initialLocation: '/login',
+    initialLocation: '/welcome',
     refreshListenable: authNotifier,
     redirect: (context, state) {
       final authState = ref.read(authProvider);
       final isAuthenticated = authState.isAuthenticated;
       final isAuthRoute =
+          (state.fullPath?.contains('welcome') ?? false) ||
           (state.fullPath?.contains('login') ?? false) ||
           (state.fullPath?.contains('register') ?? false);
 
@@ -39,6 +40,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     },
     routes: [
       // Auth routes
+      GoRoute(path: '/welcome', builder: (context, state) => const WelcomeScreen()),
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
       GoRoute(path: '/register', builder: (context, state) => const RegisterScreen()),
       // Main tabs with StatefulShellRoute

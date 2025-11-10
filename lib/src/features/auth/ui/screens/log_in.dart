@@ -29,7 +29,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     if (email.isNotEmpty && password.isNotEmpty) {
       ref.read(authProvider.notifier).login(email, password);
-      // Навигация произойдет автоматически через редирект в GoRouter
     } else {
       ScaffoldMessenger.of(
         context,

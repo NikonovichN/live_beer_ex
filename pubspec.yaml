@@ -2,7 +2,7 @@ name: live_beer_ex
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -37,6 +37,8 @@ dependencies:
   logger: ^2.6.2
   go_router: ^16.3.0
   flutter_riverpod: ^3.0.3
+  vector_graphics: ^1.1.19
+  vector_graphics_compiler: ^1.1.19
 
 dev_dependencies:
   flutter_test:
@@ -54,7 +56,6 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -76,17 +77,32 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
+  fonts:
+    - family: SF-UI-DISPLAY
+      fonts:
+        - asset: assets/fonts/sf-ui-display/sf-ui-display-black.otf
+          weight: 900
+        - asset: assets/fonts/sf-ui-display/sf-ui-display-bold.otf
+          weight: 700
+        - asset: assets/fonts/sf-ui-display/sf-ui-display-heavy.otf
+          weight: 800
+        - asset: assets/fonts/sf-ui-display/sf-ui-display-light.otf
+          weight: 300
+        - asset: assets/fonts/sf-ui-display/sf-ui-display-medium.otf
+          weight: 500
+        - asset: assets/fonts/sf-ui-display/sf-ui-display-semibold.otf
+          weight: 600
+        - asset: assets/fonts/sf-ui-display/sf-ui-display-thin.otf
+          weight: 100
+        - asset: assets/fonts/sf-ui-display/sf-ui-display-ultralight.otf
+          weight: 200
+
+  assets:
+    - assets/images/
+    - assets/
+    - path: assets/svg/
+      transformers:
+        - package: vector_graphics_compiler
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
