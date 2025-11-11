@@ -9,6 +9,8 @@ class AppColors {
   static const Color darkNight = Color(0xFF1B1B1B);
   static const Color darkNav = Color(0xFF242223);
   static const Color greySurface = Color(0xFF979797);
+  static const Color link = Color(0xFF007AFF);
+  static const Color label = Color(0xFF8E8E93);
 
   static const Color backgroundWhite = pureWhite;
   static const Color surfaceWhite = pureWhite;

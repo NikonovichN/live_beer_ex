@@ -1,12 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../atoms/atoms.dart';
 
 class AppButton extends StatelessWidget {
   final VoidCallback? onPressed;
-  final bool isEnabled;
+  final bool enabled;
   final Widget child;
-  final bool isLoading;
+  final bool loading;
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
   final LinearGradient? gradient;
@@ -18,9 +19,9 @@ class AppButton extends StatelessWidget {
   const AppButton({
     super.key,
     required this.onPressed,
-    this.isEnabled = true,
+    this.enabled = true,
     required this.child,
-    this.isLoading = false,
+    this.loading = false,
     this.padding,
     this.margin,
     this.gradient,
@@ -33,9 +34,9 @@ class AppButton extends StatelessWidget {
   const AppButton.primary({
     super.key,
     required this.onPressed,
-    this.isEnabled = true,
+    this.enabled = true,
     required this.child,
-    this.isLoading = false,
+    this.loading = false,
     this.padding,
     this.margin = _margin,
     this.gradient,
@@ -48,9 +49,9 @@ class AppButton extends StatelessWidget {
   const AppButton.outlined({
     super.key,
     required this.onPressed,
-    this.isEnabled = true,
+    this.enabled = true,
     required this.child,
-    this.isLoading = false,
+    this.loading = false,
     this.padding,
     this.margin = _margin,
     this.gradient,
@@ -63,9 +64,9 @@ class AppButton extends StatelessWidget {
   const AppButton.simple({
     super.key,
     required this.onPressed,
-    this.isEnabled = true,
+    this.enabled = true,
     required this.child,
-    this.isLoading = false,
+    this.loading = false,
     this.padding,
     this.margin,
     this.gradient,
@@ -95,11 +96,11 @@ class AppButton extends StatelessWidget {
       padding: padding,
       margin: margin,
       decoration: BoxDecoration(
-        gradient: hasGradient && isEnabled ? _gradient : null,
+        gradient: hasGradient && enabled ? _gradient : null,
         borderRadius: _borderRadius,
       ),
       child: ElevatedButton(
-        onPressed: isEnabled && !isLoading ? onPressed : null,
+        onPressed: enabled && !loading ? onPressed : null,
         style: ButtonStyle(
           backgroundColor: WidgetStateProperty.resolveWith(_backgroundColor),
           shape: WidgetStateProperty.resolveWith(_shape),
@@ -111,7 +112,7 @@ class AppButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (isLoading) ...[
+            if (loading) ...[
               CircularProgressIndicator(color: appButtonTheme.colorCircularProgressIndicator),
               const SizedBox(width: 12.0),
             ],
@@ -126,11 +127,11 @@ class AppButton extends StatelessWidget {
   }
 
   Color _backgroundColor(Set<WidgetState> states) {
-    if (gradient != null && isEnabled) {
+    if (gradient != null && enabled) {
       return Colors.transparent;
     }
 
-    if (isLoading) {
+    if (loading) {
       return appButtonTheme.backgroundLoading;
     }
     if (states.contains(WidgetState.disabled)) {
@@ -145,7 +146,7 @@ class AppButton extends StatelessWidget {
   OutlinedBorder? _shape(Set<WidgetState> states) {
     BorderSide? side;
     if (appButtonTheme.widthBorder != null) {
-      if (isLoading && appButtonTheme.borderColorLoading != null) {
+      if (loading && appButtonTheme.borderColorLoading != null) {
         side = BorderSide(
           width: appButtonTheme.widthBorder!,
           color: appButtonTheme.borderColorLoading!,
@@ -215,7 +216,7 @@ class AppPrimaryButtonTheme implements ButtonTheme {
   @override
   Color get textColor => AppColors.primaryButtonTextColorEnabled;
   @override
-  Color get colorCircularProgressIndicator => AppColors.greyColor;
+  Color get colorCircularProgressIndicator => AppColors.accentYellow;
   @override
   double? get widthBorder => 0.0;
   @override
@@ -240,7 +241,7 @@ class AppOutlinedButtonTheme implements ButtonTheme {
   @override
   Color get textColor => AppColors.darkBlue;
   @override
-  Color get colorCircularProgressIndicator => AppColors.darkBlue;
+  Color get colorCircularProgressIndicator => AppColors.accentYellow;
   @override
   double? get widthBorder => 1.0;
   @override
@@ -249,4 +250,46 @@ class AppOutlinedButtonTheme implements ButtonTheme {
   Color? get borderColorDisabled => AppColors.outlinedButtonBorderDisabled;
   @override
   Color? get borderColorLoading => AppColors.outlinedButtonBorderDisabled;
+}
+
+class IOSBackButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final Color color;
+  final String? text;
+  final EdgeInsets? margin;
+
+  const IOSBackButton({
+    super.key,
+    this.margin,
+    required this.onPressed,
+    this.color = AppColors.link,
+    this.text,
+  });
+
+  static const width = 120.0;
+  static const _backTitle = 'Назад';
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: margin ?? EdgeInsets.only(left: 16.0),
+      child: CupertinoButton(
+        alignment: AlignmentGeometry.centerLeft,
+        minimumSize: Size.fromWidth(width),
+        padding: EdgeInsets.zero,
+        onPressed: onPressed,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Icons.arrow_back_ios, color: color, size: 20),
+            const SizedBox(width: 4),
+            Text(
+              text ?? _backTitle,
+              style: TextStyle(color: color, fontSize: 15, fontWeight: FontWeight.w400),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

@@ -46,7 +46,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       }
 
       if (isAuthenticated && isAuthRoute) {
-        return '/';
+        return AppRouteNames.home.path;
       }
 
       return null;

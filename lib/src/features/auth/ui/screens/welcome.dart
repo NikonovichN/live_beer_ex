@@ -76,7 +76,7 @@ class WelcomeScreen extends StatelessWidget {
                       SizedBox(width: 10.0),
                       Expanded(
                         child: AppButton.primary(
-                          onPressed: () {},
+                          onPressed: () => context.pushNamed(AppRouteNames.register.name),
                           child: const Text('Регистрация'),
                         ),
                       ),
