@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:live_beer_ex/src/features/auth/state/provider.dart';
 import 'package:live_beer_ex/src/navigation/navigator.dart';
 
 import 'package:vector_graphics/vector_graphics_compat.dart';
 
 import '../../../../ui/ui.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends ConsumerWidget {
   const WelcomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, ref) {
     // TODO: fix inner padding of page
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -83,7 +85,10 @@ class WelcomeScreen extends StatelessWidget {
                     ],
                   ),
                   AppButton.outlined(
-                    onPressed: () {},
+                    onPressed: () {
+                      ref.read(authProvider.notifier).loginInWithoutRegistration();
+                      context.goNamed(AppRouteNames.home.name);
+                    },
                     margin: EdgeInsets.all(0.0),
                     child: const Text('Вход без регистрации'),
                   ),

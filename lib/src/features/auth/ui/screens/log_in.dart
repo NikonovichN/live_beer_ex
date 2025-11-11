@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
+import 'package:live_beer_ex/src/navigation/navigator.dart';
 import 'package:live_beer_ex/src/ui/ui.dart';
 
 import '../../state/provider.dart';
@@ -62,7 +65,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   style: textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
-                AppButton.primary(onPressed: () {}, child: const Text('Войти')),
+                AppButton.primary(
+                  onPressed: () => context.goNamed(AppRouteNames.home.name),
+                  child: const Text('Войти'),
+                ),
               ],
             ),
           ),

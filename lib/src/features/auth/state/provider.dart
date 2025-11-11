@@ -41,6 +41,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(isAuthenticated: true, userId: 'user_123', email: email);
   }
 
+  void loginInWithoutRegistration() {
+    state = state.copyWith(isAuthenticated: true);
+  }
+
   void logout() {
     state = const AuthState.initial();
   }

@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:live_beer_ex/src/navigation/navigator.dart';
+import 'package:live_beer_ex/src/ui/molecules/buttons.dart';
+
 import '../../../auth/state/provider.dart';
 
 class ProfileTab extends ConsumerWidget {
@@ -28,15 +31,11 @@ class ProfileTab extends ConsumerWidget {
             const SizedBox(height: 24),
             SizedBox(
               width: 200,
-              child: ElevatedButton(
+              child: AppButton.outlined(
                 onPressed: () {
                   ref.read(authProvider.notifier).logout();
-                  context.go('/login');
+                  context.go(AppRouteNames.welcome.path);
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  foregroundColor: Colors.white,
-                ),
                 child: const Text('Выйти'),
               ),
             ),
