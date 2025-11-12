@@ -222,7 +222,7 @@ class AppPrimaryButtonTheme implements ButtonTheme {
   @override
   Color? get borderColorEnabled => AppColors.accentYellow;
   @override
-  Color? get borderColorDisabled => null;
+  Color? get borderColorDisabled => AppColors.greySurface;
   @override
   Color? get borderColorLoading => null;
 }
