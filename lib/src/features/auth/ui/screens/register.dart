@@ -17,7 +17,9 @@ class RegisterScreen extends ConsumerStatefulWidget {
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _phoneController = TextEditingController();
+  final _phoneFocusNode = FocusNode();
   final _nameController = TextEditingController();
+  final _nameFocusNode = FocusNode();
   DateTime? _selectedDate;
   String? _selectDateError;
   bool _agreementAccepted = false;
@@ -26,6 +28,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   void dispose() {
     _phoneController.dispose();
     _nameController.dispose();
+    _phoneFocusNode.dispose();
+    _nameFocusNode.dispose();
     _selectedDate = null;
     _selectDateError = null;
     super.dispose();
@@ -127,26 +131,34 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               ),
               SizedBox(height: 24.0),
               _FieldLabel(text: Text('Номер телефона')),
-              TextFormField(
-                controller: _phoneController,
-                decoration: InputDecoration(
-                  floatingLabelStyle: TextStyle(color: AppColors.textBlack),
-                  border: OutlineInputBorder(),
-                  hintText: 'Введите номер',
+              TextFieldTapRegion(
+                onTapOutside: (_) => _phoneFocusNode.unfocus(),
+                child: TextFormField(
+                  focusNode: _phoneFocusNode,
+                  controller: _phoneController,
+                  decoration: InputDecoration(
+                    floatingLabelStyle: TextStyle(color: AppColors.textBlack),
+                    border: OutlineInputBorder(),
+                    hintText: 'Введите номер',
+                  ),
+                  keyboardType: TextInputType.phone,
+                  validator: _validatePhone,
                 ),
-                keyboardType: TextInputType.phone,
-                validator: _validatePhone,
               ),
               const SizedBox(height: 16),
               _FieldLabel(text: Text('Ваше имя')),
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(
-                  floatingLabelStyle: TextStyle(color: AppColors.textBlack),
-                  border: OutlineInputBorder(),
-                  hintText: 'Введите имя',
+              TextFieldTapRegion(
+                onTapOutside: (_) => _nameFocusNode.unfocus(),
+                child: TextFormField(
+                  focusNode: _nameFocusNode,
+                  controller: _nameController,
+                  decoration: const InputDecoration(
+                    floatingLabelStyle: TextStyle(color: AppColors.textBlack),
+                    border: OutlineInputBorder(),
+                    hintText: 'Введите имя',
+                  ),
+                  validator: _validateName,
                 ),
-                validator: _validateName,
               ),
               const SizedBox(height: 16),
               _FieldLabel(text: Text('Дата рождения')),
