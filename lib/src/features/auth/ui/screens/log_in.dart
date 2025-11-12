@@ -17,9 +17,18 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
+  static const _durationPageSwitch = Duration(milliseconds: 300);
+
   LoginStage _stage = LoginStage.phone;
   String _enteredPhone = '';
   bool _loading = false;
+  final _pageController = PageController();
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   void _submitPhone(String phone) async {
     final digitsOnly = phone.replaceAll(RegExp(r'[^\d]'), '');
@@ -34,6 +43,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         _stage = LoginStage.code;
         _loading = false;
       });
+
+      _pageController.nextPage(duration: _durationPageSwitch, curve: Curves.easeIn);
     }
   }
 
@@ -58,6 +69,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       context.go(AppRouteNames.welcome.path);
     } else {
       setState(() => _stage = LoginStage.phone);
+      _pageController.previousPage(duration: _durationPageSwitch, curve: Curves.easeIn);
     }
   }
 
@@ -80,27 +92,39 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         leading: IOSBackButton(onPressed: _onBackPress),
         leadingWidth: IOSBackButton.width,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          child: _stage == LoginStage.phone
-              ? _PhoneState(
-                  key: ValueKey(LoginStage.phone),
-                  onSubmitPhone: _submitPhone,
-                  loading: _loading,
-                  initialPhone: _enteredPhone,
-                )
-              : _CodeState(
-                  key: ValueKey(LoginStage.code),
-                  onSubmitCode: (v) => _submitCode(),
-                  loading: _loading,
-                  onBackPress: _onBackPress,
-                  maskedPhone: _getMaskedPhone(),
-                ),
-        ),
+      body: PageView(
+        controller: _pageController,
+        children: [
+          _ScrollableState(
+            child: _PhoneState(
+              key: ValueKey(LoginStage.phone),
+              onSubmitPhone: _submitPhone,
+              loading: _loading,
+              initialPhone: _enteredPhone,
+            ),
+          ),
+          _ScrollableState(
+            child: _CodeState(
+              key: ValueKey(LoginStage.code),
+              onSubmitCode: (v) => _submitCode(),
+              loading: _loading,
+              onBackPress: _onBackPress,
+              maskedPhone: _getMaskedPhone(),
+            ),
+          ),
+        ],
       ),
     );
+  }
+}
+
+class _ScrollableState extends StatelessWidget {
+  const _ScrollableState({required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(padding: const EdgeInsets.all(16.0), child: child);
   }
 }
 

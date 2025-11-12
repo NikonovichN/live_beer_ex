@@ -36,12 +36,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     redirect: (context, state) {
       final authState = ref.read(authProvider);
       final isAuthenticated = authState.isAuthenticated;
+      final isGuestAuthenticated = authState.isGuestAuthenticated;
       final isAuthRoute =
           (state.fullPath?.contains(AppRouteNames.welcome.name) ?? false) ||
           (state.fullPath?.contains(AppRouteNames.login.name) ?? false) ||
           (state.fullPath?.contains(AppRouteNames.register.name) ?? false);
 
-      if (!isAuthenticated && !isAuthRoute) {
+      if (!isAuthenticated && !isAuthRoute && !isGuestAuthenticated) {
         return AppRouteNames.login.path;
       }
 

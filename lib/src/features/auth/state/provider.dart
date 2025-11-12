@@ -38,11 +38,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   void loginByPhone(String value) {
-    state = state.copyWith(isAuthenticated: true, userId: 'user_123', phone: value);
+    state = state.copyWith(
+      isAuthenticated: true,
+      userId: 'user_123',
+      phone: value,
+      isGuestAuthenticated: false,
+    );
   }
 
   void loginInWithoutRegistration() {
-    state = state.copyWith(isAuthenticated: true);
+    state = state.copyWith(isGuestAuthenticated: true);
   }
 
   void logout() {

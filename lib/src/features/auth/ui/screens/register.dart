@@ -61,10 +61,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     if (value == null || value.isEmpty) {
       return 'Введите номер телефона';
     }
-    final digitsOnly = value.replaceAll(RegExp(r'[^0-9]'), '');
-    if (digitsOnly.length != 11) {
-      return 'Номер должен содержать 11 цифр';
+
+    final phoneRegex = RegExp(r'^\+7\d{10}$');
+
+    if (!phoneRegex.hasMatch(value)) {
+      return 'Номер должен быть в формате: +7XXXXXXXXXX';
     }
+
     return null;
   }
 
@@ -110,6 +113,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
+          autovalidateMode: AutovalidateMode.onUnfocus,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
